@@ -1,18 +1,28 @@
 const Tile = require('./Tile');
-
+const Board = require('./Board');
+const { Image } = require('canvas');
 class Player {
 
     /**
      * The player class, This is where all the functionality is added to the Discord user
+     * @param {Board} [board] The board the player plays on
+     * @param {Snowflake} [id] The user's discord id
      * @param {String} [name] A name you set for yourself, default will be your Discord tag
-     * @param {ImageData} [imgIcon] The image of your avatar, saved so it doesn't have to keep fetching it
+     * @param {Image} [imgIcon] The image of your avatar, saved so it doesn't have to keep fetching it
      */
-    constructor(name, imgIcon) {
+    constructor(board, id, name, imgIcon) {
+
+        /**
+         * The board that the player plays on
+         * @type {Board}
+         */
+        this.board = board;
+
         /**
          * The id of the Discord user
          * @type {Snowflake}
          */
-        this.id = '';
+        this.id = id;
 
         /**
          * The name of the player, default is Discord tag
@@ -22,7 +32,7 @@ class Player {
 
         /**
          * The image of the user's avatar, saved so it doesn't have to keep being fetched
-         * @type {ImageData}
+         * @type {Image}
          */
         this.imgIcon = imgIcon;
 
@@ -85,7 +95,7 @@ class Player {
          * The tile the player is currently at
          * @type {Tile}
          */
-        this.currentTile = null;
+        this.currentTile = this.board.tiles[this.currentPosition];
     }
 
     roll() {

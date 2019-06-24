@@ -10,13 +10,15 @@ class Board {
      */
     constructor(locale) {
 
+        this.isInProgress = true;
+
         /**
          * Try and turn the given locale into one in the list of available locales
          */
         try {
-            locale = convertLocaleToSuitable(locale);
+            this.locale = convertLocaleToSuitable(locale);
         } catch {
-            locale = convertLocaleToSuitable('us-default');
+            this.locale = convertLocaleToSuitable('us-default');
         }
 
         /**
@@ -88,14 +90,6 @@ class Board {
             new Set('Blues', 200, this.tiles[37], this.tiles[39])
         ];
 
-    }
-
-    /**
-     * Returns the set array
-     * @readonly
-     */
-    get getSets() {
-        return this.sets;
     }
 }
 
