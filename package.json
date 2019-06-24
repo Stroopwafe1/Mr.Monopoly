@@ -1,0 +1,25 @@
+{
+  "name": "mr.monopoly",
+  "version": "1.0.0",
+  "description": "A Discord bot made for Discord Hack Week 2019",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Stroopwafe1/Mr.Monopoly.git"
+  },
+  "keywords": [
+    "Discord"
+  ],
+  "author": "Stroopwafel#0001",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Stroopwafe1/Mr.Monopoly/issues"
+  },
+  "homepage": "https://github.com/Stroopwafe1/Mr.Monopoly#readme",
+  "dependencies": {
+    "discord.js": "^11.5.1"
+  }
+}
