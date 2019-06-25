@@ -54,7 +54,8 @@ class Set {
      * @returns {boolean}
      */
     isSetOwned(tile) {
-        return tile.ownedBy.equals(this.tile1.ownedBy) && 
+        return tile.ownedBy && 
+        tile.ownedBy.equals(this.tile1.ownedBy) && 
         tile.ownedBy.equals(this.tile2.ownedBy) && 
         (tile3 ? tile.ownedBy.equals(this.tile3) : true);
     }

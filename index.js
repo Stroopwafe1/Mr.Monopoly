@@ -25,9 +25,6 @@ for (const file of commandFiles) {
 
 client.login(TOKEN);
 
-//Global variables for easy access
-const vars = require('./globalvariables');
-
 /**
  * Once the client is logged in and ready, log it
  */
@@ -53,7 +50,27 @@ client.on('message', message => {
     //The variable for if the bots gets mentioned
     let botMention = message.mentions.users.find(user => user.id === client.user.id);
 
+    //Global variables for easy access
+    const vars = require('./globalvariables');
     //If the game has been instantiated, don't listen for a prefix/mention
+    if (vars.boards.get(message.guild.id) && vars.boards.get(message.guild.id).isInProgress) {
+        
+        //If the channel isn't the monopoly channel, ignore the message
+        if (message.channel !== vars.channels.get(message.guild.id)) {
+            return;
+        }
+
+        //If the player who sent the message isn't the one whose turn it is, ignore the message
+        if (!vars.players.get(message.guild.id).find(player => player.id === message.author.id).isTurn) {
+            return;
+        }
+        //Else, if that isn't the case, set the message content to the global variables
+        else {
+            vars.receivedCommands.set(message.guild.id, message.content);
+            vars.eventEmitter.emit('message', message.content);
+        }
+
+    }
 
     //If the bot doesn't get mentioned, and the message doesn't start with a prefix, do nothing
     if (!botMention && !message.content.startsWith(PREFIX)) return;

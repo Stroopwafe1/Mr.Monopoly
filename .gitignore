@@ -84,5 +84,8 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
+#tasks
+*.tasks
+
 # Discord Token
 SuperSecretTokenFile.js

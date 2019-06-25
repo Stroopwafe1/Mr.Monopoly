@@ -49,7 +49,7 @@ const USDefault = {
     ]
 }
 module.exports = {
-    locales: [USDefault],
+    locales: [{USDefault}],
     /**
      * 
      * @param {String} string1 
@@ -57,10 +57,11 @@ module.exports = {
      * @returns {this} 
      */
     getLocale(string1, string2) {
-        this.locales.forEach(value => {
-            let varName = Object.keys({value})[0];
+        for(let i of this.locales) {
+            let varName = Object.keys(i)[0];
+            console.log(`varName: ${varName}\tString1: ${string1}\tString2: ${string2}`);
             if(varName.substr(0, 2).toUpperCase() === string1.toUpperCase() && varName.substr(2).toUpperCase() === string2.toUpperCase())
-                return value;
-        });
+                return i[varName];
+        }
     }
 }
