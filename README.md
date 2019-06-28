@@ -1,7 +1,7 @@
 ﻿# Mr.Monopoly
 Mr. Monopoly is a Discord bot made for the Discord Hack Week 2019
 
-## invite link 
+## Invite link 
 https://discordapp.com/api/oauth2/authorize?client_id=592612889756696586&permissions=52288&scope=bot
 
 ## General information
