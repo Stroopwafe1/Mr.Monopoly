@@ -1,35 +1,31 @@
 const Player = require('./Player');
 
 class Card {
-
-    /**
-     * The type of the card; e.g. TELEPORT/TAX/JAILCARD
-     * @type {String}
-     */
-    type = '';
-
-    /**
-     * The value with which to execute the type. 
-     * A type of TAX would tax you this amount, a type of TELEPORT would teleport you to this tile index
-     * @type {Number}
-     */
-    value = 0;
-
-    /**
-     * The text on the card itself.
-     * @type {String}
-     */
-    text = '';
-
     /**
      * This class is meant as as easy way to add the functionality of the chance/community chest cards into the game
-     * @param [type] The type of the card; e.g: TELEPORT/TAX/JAILCARD
-     * @param [value] The value with which to execute the type. A type of TAX would tax you this amount, etc...
-     * @param [text] The text on the actual card
+     * @param {String} type The type of the card; e.g: TELEPORT/TAX/JAILCARD/NEARTP/MOVE/REPAIRS/OTHERS
+     * @param {Array<Number>} values The values with which to execute the type. A type of NEARTP would teleport the player to the closest of these values.
+     * @param {String} text  The text on the actual card
      */
-    constructor(type, value, text) {
+    constructor(type, values, text) {
+        /**
+         * The type of the card; e.g. TELEPORT/TAX/JAILCARD/NEARTP/MOVE/REPAIRS/OTHERS
+         * @type {String}
+         */
         this.type = type;
-        this.value = value;
+
+        /**
+         * The values with which to execute the type. 
+         * For single values, just enter one value
+         * A type of NEARTP would teleport the player to the closest of these values.
+         * @type {Array<Number>}
+         */
+        this.values = values;
+
+        /**
+         * The text on the card itself.
+         * @type {String}
+         */
         this.text = text;
     }
 
@@ -38,19 +34,40 @@ class Card {
      * @param {Player} player the player to perform the actions on
      */
     execute(player) {
-        if (!player instanceof Player) throw new Error("Player parameter isn't a Player");
-        
+        const vars = require('../../globalvariables');
+
+        vars.messages.get(player.board.guildID).push(`${this.text}`);
         switch (this.type) {
             case 'TELEPORT':
-                player.teleport(this.value);
+                //Teleports the player
+                player.teleport(this.values[0]);
                 break;
             case 'TAX':
-                player.money -= this.value;
+                //Tax the player
+                player.payTax(this.values[0]);
                 break;
             case 'JAILCARD':
+                //Add one to the Get Out Of Jail Free cards
                 player.amountGetOutOfJailCards++;
                 break;
+            case 'NEARTP':
+                //Teleport the player to the nearest tile
+                player.teleport(player.findNearest(this.values));
+                break;
+            case 'MOVE':
+                //Moves the player
+                player.move(this.values[0]);
+                break;
+            case 'REPAIRS':
+                //Pay the repair costs
+                player.payRepairs(this.values[0], this.values[1]);
+                break;
+            case 'OTHERS':
+                //Pays or receives money from, other players
+                player.payOthers(this.values[0]);
+                break;
             default:
+                //This should never happen
                 throw new Error("Don't recognise the given card type");
         }
     }

@@ -29,18 +29,10 @@ var players = new Discord.Collection();
  */
 var boards = new Discord.Collection();
 
-/**
- * A collection of the commands received, mapped by the guild ID
- * Useful for checking what the player wants to happen
- * @type {Map<Snowflake, String>}
- */
-var receivedCommands = new Discord.Collection();
-
 module.exports = {
     channels,
     messages,
     players,
     boards,
-    receivedCommands,
     eventEmitter
 }

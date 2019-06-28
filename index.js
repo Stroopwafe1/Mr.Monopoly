@@ -53,20 +53,23 @@ client.on('message', message => {
     //Global variables for easy access
     const vars = require('./globalvariables');
     //If the game has been instantiated, don't listen for a prefix/mention
-    if (vars.boards.get(message.guild.id) && vars.boards.get(message.guild.id).isInProgress) {
+    if (vars.boards.get(message.guild.id) && vars.boards.get(message.guild.id).isInProgress && !message.content.startsWith(PREFIX)) {
         
         //If the channel isn't the monopoly channel, ignore the message
         if (message.channel !== vars.channels.get(message.guild.id)) {
             return;
         }
 
+        //If the player who sent the message isn't in the game, ignore the message
+        if(!vars.players.get(message.guild.id).find(player => player.id === message.author.id))
+            return;
+
         //If the player who sent the message isn't the one whose turn it is, ignore the message
         if (!vars.players.get(message.guild.id).find(player => player.id === message.author.id).isTurn) {
             return;
         }
-        //Else, if that isn't the case, set the message content to the global variables
+        //Else, if that isn't the case, 'transfer' the command to the player command listener
         else {
-            vars.receivedCommands.set(message.guild.id, message.content);
             vars.eventEmitter.emit('message', message.content);
         }
 
@@ -97,6 +100,6 @@ client.on('message', message => {
     try {
         command.run(message, arguments);
     } catch (error) {
-        console.error(error);
+        return message.channel.send(`${message.author}, the following error occurred:\n\`\`\`${error}\`\`\``);
     }
 });

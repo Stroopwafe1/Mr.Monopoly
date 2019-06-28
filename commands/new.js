@@ -8,6 +8,7 @@ const snekfetch = require('snekfetch');
 
 module.exports = {
     name: 'new',
+    description: 'Start a new game',
     /**
      * The message and argument parameters from index.js
      * @param {Message} message 
@@ -53,7 +54,6 @@ module.exports = {
 function newBoard(message, args) {
     //If there are no arguments for the constructor of the Board, default to 'us-default'
     if(!args[0]) {
-        console.log('no args provided, defaulting to us-default');
         args[0] = 'us-default';
     }
 
@@ -93,7 +93,8 @@ function newBoard(message, args) {
                     body: buffer
                 } = await snekfetch.get(user.displayAvatarURL);
                 const avatar = await Canvas.loadImage(buffer);
-                return new Player(board, user.id, user.tag, avatar);
+                let guildMember = message.guild.members.find(guildmember => guildmember.id === user.id);
+                return new Player(board, user.id, guildMember.displayName, avatar, 2000, 0, 0, false, []);
                 //console.log(arr);
             })).then(completed => {
                 //filter out the bot from the reactions, if the player count is bigger than 2 (If there's another player)

@@ -6,11 +6,9 @@ class Set {
      * This class is essential to check whether the current set is owned, and if so, allow the player to buy houses
      * @param {String} colour The name of the set
      * @param {Number} houseBuyPrice The price for the houses
-     * @param {Tile} tile1 The first tile
-     * @param {Tile} tile2 The second tile
-     * @param {Tile} tile3 The third tile, if any
+     * @param {Array<Tile>} tiles The tiles that are in this set
      */
-    constructor(colour, houseBuyPrice, tile1, tile2, tile3) {
+    constructor(colour, houseBuyPrice, tiles) {
         /**
          * The set 'name' as it were, e.g. blues, oranges, purples, etc...
          * @type {String}
@@ -24,28 +22,10 @@ class Set {
         this.houseBuyPrice = houseBuyPrice;
 
         /**
-         * The first property tile in the set
-         * @type {Tile}
+         * The tiles that are in this set
+         * @type {Array<Tile>}
          */
-        this.tile1 = tile1;
-
-        /**
-         * The second property tile in the set
-         * @type {Tile}
-         */
-        this.tile2 = tile2;
-
-        /**
-         * The third property tile in the set, if any
-         * @type {Tile}
-         */
-        this.tile3 = tile3;
-
-        /**
-         * Check if a third tile was provided, if not, the set has two properties
-         * @type {Number}
-         */
-        this.amountOfProperties = tile3 ? 3 : 2;
+        this.tiles = tiles;
     }
 
     /**
@@ -54,10 +34,7 @@ class Set {
      * @returns {boolean}
      */
     isSetOwned(tile) {
-        return tile.ownedBy && 
-        tile.ownedBy.equals(this.tile1.ownedBy) && 
-        tile.ownedBy.equals(this.tile2.ownedBy) && 
-        (tile3 ? tile.ownedBy.equals(this.tile3) : true);
+        return tile.ownedBy && this.tiles.every(looptile => tile.ownedBy.equals(looptile.ownedBy));
     }
 }
 
